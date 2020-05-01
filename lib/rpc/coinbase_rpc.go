@@ -2,11 +2,12 @@ package rpc
 
 import (
 	"bytes"
-	"coinbase/lib/auth"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/BillotP/coinbase/lib/auth"
 )
 
 // RPC handles the remote procedure call requests

@@ -1,11 +1,12 @@
 package main
 
 import (
-	"coinbase/lib/models"
 	"fmt"
 	"log"
 	"strconv"
 	"strings"
+
+	"github.com/BillotP/coinbase/lib/models"
 )
 
 func main() {

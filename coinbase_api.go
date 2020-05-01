@@ -1,9 +1,9 @@
 package main
 
 import (
-	"coinbase/lib/auth"
-	"coinbase/lib/models"
-	"coinbase/lib/rpc"
+	"github.com/BillotP/coinbase/lib/auth"
+	"github.com/BillotP/coinbase/lib/models"
+	"github.com/BillotP/coinbase/lib/rpc"
 )
 
 // Client is the struct from which all API requests are made
