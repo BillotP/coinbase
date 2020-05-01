@@ -6,7 +6,7 @@
 Grab this dep 
 
 ```bash
-go get "github.com/davelopeur/go-coinbase"
+go get "github.com/BillotP/go-coinbase"
 ```
 
 Write your api key and secrets in a `.env` file for example
@@ -23,7 +23,7 @@ package main
 import (
     "fmt"
     "log"
-    "github.com/davelopeur/go-coinbase"
+    "github.com/BillotP/go-coinbase"
 )
 
 func main() {
