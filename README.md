@@ -23,7 +23,7 @@ package main
 import (
     "fmt"
     "log"
-    "github.com/BillotP/go-coinbase"
+    "github.com/BillotP/coinbase"
 )
 
 func main() {
