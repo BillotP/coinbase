@@ -14,12 +14,15 @@ type Client struct {
 // CoinbaseClient is the global blablabla
 var CoinbaseClient *Client
 
-func init() {
+// New return an authenticated client
+func New(pubkey *string, privkey *string) *Client {
+	auth.CBAccount = auth.NewClient(pubkey, privkey)
 	CoinbaseClient = &Client{
 		rpc: rpc.RPC{
 			Auth: auth.CBAccount,
 		},
 	}
+	return CoinbaseClient
 }
 
 // Get sends a GET request and marshals response data into holder

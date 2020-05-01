@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"time"
@@ -36,11 +35,13 @@ type APIKeyAuthentication struct {
 	Client  http.Client
 }
 
-func init() {
-	if CoinbaseAPIKey == "" {
-		log.Fatal("Failed to init Coinbase Account package missing APIKey value")
-	} else if CoinbaseAPISecret == "" {
-		log.Fatal("Failed to init Coinbase Account package missing APISecret value")
+// NewClient return a new client against a pub and priv key pairs
+func NewClient(pubkey *string, privkey *string) *APIKeyAuthentication {
+	if CoinbaseAPIKey == "" && pubkey != nil {
+		CoinbaseAPIKey = *pubkey
+	}
+	if CoinbaseAPISecret == "" && privkey != nil {
+		CoinbaseAPISecret = *privkey
 	}
 	CBAccount = &APIKeyAuthentication{
 		Key:     CoinbaseAPIKey,
@@ -48,6 +49,7 @@ func init() {
 		BaseURL: CoinbaseBaseURL,
 		Client:  *http.DefaultClient,
 	}
+	return CBAccount
 }
 
 // Authenticate with API Key + Secret authentication requires a request header of the HMAC SHA-256
