@@ -21,27 +21,36 @@ And then in your code
 package main
 
 import (
-    "fmt"
-    "log"
-    "github.com/BillotP/coinbase"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/BillotP/coinbase"
+	"github.com/BillotP/coinbase/lib/models"
 )
 
 func main() {
-    // Load client
-    var coinbaseClient = coinbase.CoinbaseClient
-    // Get all your accounts
-    if myaccounts, err := coinbaseClient.Accounts(); err != nil {
-        log.Fatal(err)
-    }
-    // List them
-    for _, account := range myaccounts {
-        fmt.Printf("%s: %s (%s %s)\n", 
-            myaccounts.Balance.Currency, 
-            myaccounts.Balance.Amount, 
-            myaccounts.NativeBalance.Amount, 
-            myaccounts.NativeBalance.Currency,
-        )
-    }
+    var (
+        err error
+        pub = os.Getenv("COINBASE_APIKEY")
+        priv = os.Getenv("COINBASE_APISECRET")
+        myaccounts *models.Accounts
+	    // Load client
+	    client = coinbase.New(&pub, &priv)
+    )
+	// Get all your accounts
+	if myaccounts, err = client.GetAccounts(); err != nil {
+		log.Fatal(err)
+	}
+	// List them
+	for _, account := range myaccounts.Datas {
+		fmt.Printf("%s: %s (%s %s)\n",
+			account.Balance.Currency,
+			account.Balance.Amount,
+			account.NativeBalance.Amount,
+			account.NativeBalance.Currency,
+		)
+	}
 }
 ```
 
