@@ -1,6 +1,8 @@
 package models
 
-import "strconv"
+import (
+	"strconv"
+)
 
 // Balance is a coinbase balance model
 type Balance struct {
@@ -64,11 +66,12 @@ type Accounts struct {
 // FilterEmpty remove the empty balances from Accounts.Datas object
 func (a *Accounts) FilterEmpty() {
 	var fltr []Account
-	empty := float64(0)
+	var empty float64
 	for i := range a.Datas {
-		v, _ := strconv.ParseFloat(a.Datas[i].Amount, 64)
-		if v > empty {
+		v, err := strconv.ParseFloat(a.Datas[i].Amount, 64)
+		if v > empty && err == nil {
 			fltr = append(fltr, a.Datas[i])
 		}
 	}
+	a.Datas = fltr
 }
