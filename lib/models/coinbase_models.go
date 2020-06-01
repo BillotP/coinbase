@@ -1,5 +1,7 @@
 package models
 
+import "strconv"
+
 // Balance is a coinbase balance model
 type Balance struct {
 	Amount   string `json:"amount"`
@@ -57,4 +59,16 @@ type Response struct {
 type Accounts struct {
 	Response
 	Datas []Account `json:"data"`
+}
+
+// FilterEmpty remove the empty balances from Accounts.Datas object
+func (a *Accounts) FilterEmpty() {
+	var fltr []Account
+	empty := float64(0)
+	for i := range a.Datas {
+		v, _ := strconv.ParseFloat(a.Datas[i].Amount, 64)
+		if v > empty {
+			fltr = append(fltr, a.Datas[i])
+		}
+	}
 }
