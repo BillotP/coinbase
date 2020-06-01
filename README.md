@@ -35,8 +35,8 @@ func main() {
         pub = os.Getenv("COINBASE_APIKEY")
         priv = os.Getenv("COINBASE_APISECRET")
         myaccounts *models.Accounts
-	    // Load client
-	    client = coinbase.New(&pub, &priv)
+		// Load client
+		client = coinbase.New(&pub, &priv)
     )
 	// Get all your accounts
 	if myaccounts, err = client.GetAccounts(); err != nil {
