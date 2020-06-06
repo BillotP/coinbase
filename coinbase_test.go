@@ -35,13 +35,24 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+func TestGetSpotPrice(t *testing.T) {
+	var pub = creds.Account[0].Pub
+	var priv = creds.Account[0].Priv
+	var foo = New(&pub, &priv)
+	res, err := foo.GetSpotPrice("BTC", "EUR")
+	if err != nil {
+		t.Errorf("Error : %s\n", err.Error())
+	}
+	t.Log("Got SpotPrice ", res)
+}
+
 func TestGetAccounts(t *testing.T) {
 	var pub = creds.Account[0].Pub
 	var priv = creds.Account[0].Priv
 	var foo = New(&pub, &priv)
-	res, fii := foo.GetAccounts()
-	if fii != nil {
-		t.Errorf("Error : %s\n", fii.Error())
+	res, err := foo.GetAccounts()
+	if err != nil {
+		t.Errorf("Error : %s\n", err.Error())
 	}
 	if res == nil {
 		t.Errorf("Error want models.Accounts got %v", res)

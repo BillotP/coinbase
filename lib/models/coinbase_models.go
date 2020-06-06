@@ -94,6 +94,11 @@ type Response struct {
 	Pagination `json:"pagination"`
 }
 
+// SpotPrice is the spot price request model
+type SpotPrice struct {
+	Data Balance `json:"data"`
+}
+
 // Accounts is the response model for GET `accounts` data
 type Accounts struct {
 	Response

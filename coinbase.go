@@ -45,6 +45,16 @@ func (c Client) Put(path string, params interface{}, holder interface{}) error {
 	return c.rpc.Request("PUT", path, params, &holder)
 }
 
+// GetSpotPrice returns the last sport price for a currency pair
+func (c Client) GetSpotPrice(base, quote string) (*models.SpotPrice, error) {
+	var spot models.SpotPrice
+
+	if err := c.Get("v2/prices/"+base+"-"+quote+"/spot", nil, &spot); err != nil {
+		return nil, err
+	}
+	return &spot, nil
+}
+
 // GetAccounts returns a list of all coinbase accounts
 func (c Client) GetAccounts() (*models.Accounts, error) {
 	var accounts models.Accounts
