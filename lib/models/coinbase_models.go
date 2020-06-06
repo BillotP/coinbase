@@ -40,6 +40,43 @@ type Account struct {
 	NativeBalance    Balance `json:"native_balance"`
 }
 
+// Network is a crypto network entity model
+type Network struct {
+	Status string `json:"status"`
+	Name   string `json:"name"`
+}
+
+// Ressource is a transaction ressource model
+type Ressource struct {
+	ID            string `json:"id"`
+	Ressource     string `json:"ressource"`
+	RessourcePath string `json:"ressource_path"`
+}
+
+// Detail is a transaction detail model
+type Detail struct {
+	Title    string `json:"title"`
+	Subtitle string `json:"subtitle"`
+}
+
+// Transaction is the transaction element struct
+type Transaction struct {
+	ID            string    `json:"id"`
+	Type          string    `json:"type"`
+	Status        string    `json:"status"`
+	Amount        Balance   `json:"amount"`
+	NativeAmount  Balance   `json:"native_amount"`
+	Description   *string   `json:"description"`
+	CreatedAt     string    `json:"created_at"`
+	UpdatedAt     string    `json:"updated_at"`
+	Ressource     string    `json:"ressource"`
+	RessourcePath string    `json:"ressource_path"`
+	Buy           Ressource `json:"buy,omitempty"`
+	To            Ressource `json:"to,omitempty"`
+	Network       Network   `json:"network,omitempty"`
+	Details       Detail    `json:"details"`
+}
+
 // Pagination is the pagination struct for a Coinbase API response
 type Pagination struct {
 	EndingBefore         string `json:"ending_before"`
@@ -61,6 +98,12 @@ type Response struct {
 type Accounts struct {
 	Response
 	Datas []Account `json:"data"`
+}
+
+// Transactions is the response mode for transaction data
+type Transactions struct {
+	Response
+	Datas []Transaction `json:"data"`
 }
 
 // FilterEmpty remove the empty balances from Accounts.Datas object
