@@ -63,6 +63,12 @@ func TestGetAccounts(t *testing.T) {
 		t.Errorf("Error want models.Accounts got %v", res)
 	}
 	t.Log("Got accounts ", res)
+	// var ncli = &Client{}
+	// res, err = ncli.GetAccounts()
+	// if err == nil {
+	// 	t.Error("Error : want error got nil")
+	// }
+	// t.Log("Got error ", err)
 }
 
 func TestGetTransactionsByAccountID(t *testing.T) {
@@ -70,11 +76,20 @@ func TestGetTransactionsByAccountID(t *testing.T) {
 	if fii != nil {
 		log.Fatal(fii)
 	}
-	fon, fuu := defcli.GetTransactionsByAccountID(res.Datas[0].ID)
-	if fuu != nil {
-		t.Errorf("Error : %s\n", fuu.Error())
+	ltcAcc := res.Get("LTC")
+	if ltcAcc == nil {
+		log.Fatal(fmt.Errorf("Failed to get LTC Account ID"))
 	}
-	t.Log("Got account transaction ", fon)
+	trs, err := defcli.GetTransactionsByAccountID(ltcAcc.ID)
+	if err != nil {
+		t.Errorf("Error : %s\n", err.Error())
+	}
+	t.Log("Got account transaction ", trs)
+	trs, err = defcli.GetTransactionsByAccountID("invalid")
+	if err == nil {
+		t.Errorf("Error want error got nil\n")
+	}
+	t.Log("Got error ", err)
 }
 
 func TestGetNewAccountAddress(t *testing.T) {
