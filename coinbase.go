@@ -62,3 +62,12 @@ func (c Client) GetAccountByID(accountID string) (*models.Accounts, error) {
 	}
 	return &accounts, nil
 }
+
+// GetTransactionsByAccountID lists account’s transactions
+func (c Client) GetTransactionsByAccountID(accountID string) (*models.Transactions, error) {
+	var transact models.Transactions
+	if err := c.Get("v2/accounts/"+accountID+"/transactions", nil, &transact); err != nil {
+		return nil, err
+	}
+	return &transact, nil
+}
