@@ -105,6 +105,33 @@ type Accounts struct {
 	Datas []Account `json:"data"`
 }
 
+// Get an account by asset
+func (a Accounts) Get(asset string) *Account {
+	for i := range a.Datas {
+		if a.Datas[i].Balance.Currency == asset {
+			return &a.Datas[i]
+		}
+	}
+	return nil
+}
+
+// Address is the model for new account deposit address
+type Address struct {
+	ID            string `json:"id"`
+	Address       string `json:"address"`
+	Name          string `json:"name"`
+	CreatedAt     string `json:"created_at"`
+	UpdatedAt     string `json:"updated_at"`
+	Network       string `json:"network"`
+	Ressource     string `json:"ressource"`
+	RessourcePath string `json:"ressource_path"`
+}
+
+// Addresses is the response model for POST `addresses` data
+type Addresses struct {
+	Data Address `json:"data"`
+}
+
 // Transactions is the response mode for transaction data
 type Transactions struct {
 	Response

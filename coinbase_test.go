@@ -1,6 +1,7 @@
 package coinbase
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -20,6 +21,7 @@ type accounts struct {
 }
 
 var creds accounts
+var defcli *Client
 
 func TestMain(m *testing.M) {
 	var (
@@ -32,25 +34,28 @@ func TestMain(m *testing.M) {
 	if _, err := toml.Decode(string(dat), &creds); err != nil {
 		log.Fatal(err)
 	}
+	var pub = creds.Account[0].Pub
+	var priv = creds.Account[0].Priv
+	defcli = New(&pub, &priv)
 	os.Exit(m.Run())
 }
 
 func TestGetSpotPrice(t *testing.T) {
-	var pub = creds.Account[0].Pub
-	var priv = creds.Account[0].Priv
-	var foo = New(&pub, &priv)
-	res, err := foo.GetSpotPrice("BTC", "EUR")
+	res, err := defcli.GetSpotPrice("BTC", "EUR")
 	if err != nil {
 		t.Errorf("Error : %s\n", err.Error())
 	}
 	t.Log("Got SpotPrice ", res)
+	res, err = defcli.GetSpotPrice("YLO", "KLKLL")
+	if err == nil {
+		t.Errorf("Error want error got nil")
+	}
+	t.Log("Got err ", err)
+
 }
 
 func TestGetAccounts(t *testing.T) {
-	var pub = creds.Account[0].Pub
-	var priv = creds.Account[0].Priv
-	var foo = New(&pub, &priv)
-	res, err := foo.GetAccounts()
+	res, err := defcli.GetAccounts()
 	if err != nil {
 		t.Errorf("Error : %s\n", err.Error())
 	}
@@ -61,16 +66,34 @@ func TestGetAccounts(t *testing.T) {
 }
 
 func TestGetTransactionsByAccountID(t *testing.T) {
-	var pub = creds.Account[0].Pub
-	var priv = creds.Account[0].Priv
-	var foo = New(&pub, &priv)
-	res, fii := foo.GetAccounts()
+	res, fii := defcli.GetAccounts()
 	if fii != nil {
 		log.Fatal(fii)
 	}
-	fon, fuu := foo.GetTransactionsByAccountID(res.Datas[0].ID)
+	fon, fuu := defcli.GetTransactionsByAccountID(res.Datas[0].ID)
 	if fuu != nil {
 		t.Errorf("Error : %s\n", fuu.Error())
 	}
 	t.Log("Got account transaction ", fon)
+}
+
+func TestGetNewAccountAddress(t *testing.T) {
+	r, err := defcli.GetAccounts()
+	if err != nil {
+		log.Fatal(err)
+	}
+	ltcAcc := r.Get("LTC")
+	if ltcAcc == nil {
+		log.Fatal(fmt.Errorf("Failed to get LTC Account ID"))
+	}
+	res, err := defcli.GetNewAccountAddress(ltcAcc.ID)
+	if err != nil {
+		t.Errorf("Error : %s\n", err.Error())
+	}
+	t.Log("Got account address ", res)
+	res, err = defcli.GetNewAccountAddress("invalid")
+	if err == nil {
+		t.Errorf("Error want error got nil")
+	}
+	t.Log("Got error ", err)
 }

@@ -71,7 +71,7 @@ func (r RPC) ExecuteRequest(req *http.Request) ([]byte, error) {
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
 	bytes := buf.Bytes()
-	if resp.StatusCode != 200 {
+	if resp.StatusCode > http.StatusIMUsed {
 		if len(bytes) == 0 { // Log response body for debugging purposes
 			log.Printf("Response body was empty")
 		} else {

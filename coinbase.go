@@ -1,6 +1,8 @@
 package coinbase
 
 import (
+	"net/http"
+
 	"github.com/BillotP/coinbase/lib/auth"
 	"github.com/BillotP/coinbase/lib/models"
 	"github.com/BillotP/coinbase/lib/rpc"
@@ -27,22 +29,22 @@ func New(pubkey *string, privkey *string) *Client {
 
 // Get sends a GET request and marshals response data into holder
 func (c Client) Get(path string, params interface{}, holder interface{}) error {
-	return c.rpc.Request("GET", path, params, &holder)
+	return c.rpc.Request(http.MethodGet, path, params, &holder)
 }
 
 // Post sends a POST request and marshals response data into holder
 func (c Client) Post(path string, params interface{}, holder interface{}) error {
-	return c.rpc.Request("POST", path, params, &holder)
+	return c.rpc.Request(http.MethodPost, path, params, &holder)
 }
 
 // Delete sends a DELETE request and marshals response data into holder
 func (c Client) Delete(path string, params interface{}, holder interface{}) error {
-	return c.rpc.Request("DELETE", path, params, &holder)
+	return c.rpc.Request(http.MethodDelete, path, params, &holder)
 }
 
 // Put sends a PUT request and marshals response data into holder
 func (c Client) Put(path string, params interface{}, holder interface{}) error {
-	return c.rpc.Request("PUT", path, params, &holder)
+	return c.rpc.Request(http.MethodPut, path, params, &holder)
 }
 
 // GetSpotPrice returns the last sport price for a currency pair
@@ -71,6 +73,15 @@ func (c Client) GetAccountByID(accountID string) (*models.Accounts, error) {
 		return nil, err
 	}
 	return &accounts, nil
+}
+
+// GetNewAccountAddress return a new address for an account id (one time deposit)
+func (c Client) GetNewAccountAddress(accountID string) (*models.Addresses, error) {
+	var addrs models.Addresses
+	if err := c.Post("v2/accounts/"+accountID+"/addresses", nil, &addrs); err != nil {
+		return nil, err
+	}
+	return &addrs, nil
 }
 
 // GetTransactionsByAccountID lists account’s transactions
