@@ -32,8 +32,8 @@ import (
 func main() {
 	var (
 		err        error
-		pub        = os.Getenv("COINBASE_APIKEY")
-		priv       = os.Getenv("COINBASE_APISECRET")
+		pub        = os.Getenv("COINBASEPUB")
+		priv       = os.Getenv("COINBASEPRIV")
 		myaccounts *models.Accounts
 		// Load client
 		client = coinbase.New(&pub, &priv)
