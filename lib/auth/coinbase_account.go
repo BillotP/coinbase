@@ -19,9 +19,9 @@ const (
 
 var (
 	// CoinbaseAPIKey is your api key obtained from your coinbase account setting
-	CoinbaseAPIKey = os.Getenv("COINBASE_APIKEY")
+	CoinbaseAPIKey = os.Getenv("COINBASEPUB")
 	// CoinbaseAPISecret is your api secret obtained from your coinbase account settings
-	CoinbaseAPISecret = os.Getenv("COINBASE_APISECRET")
+	CoinbaseAPISecret = os.Getenv("COINBASEPRIV")
 	// CBAccount is the exported singleton to use this package in code
 	CBAccount *APIKeyAuthentication
 )
